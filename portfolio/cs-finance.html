@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Dashboard — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-text-black: #231f20; --color-text-white: #ffffff;
+      --color-text-subdued: #858693; --color-text-placeholder: #aeafb7;
+      --color-button-default: #4060ff; --color-button-hover: #334fdb;
+      --color-semantic-success: #00af6c; --color-semantic-error: #ff6060;
+      --color-surface-neutral-97: #edeff5; --color-surface-blue: #e5f0ff;
+      --color-border-neutral-85: #cccfe5; --color-border-neutral-96: #edeff5;
+      --color-decorative-pink: #fb6f92; --color-decorative-purple: #9381ff;
+      --color-decorative-blue: #4361ee; --color-decorative-green: #17c3b2;
+      --color-decorative-yellow: #ffad4d; --color-decorative-grey: #363641;
+      --font-size-xs:12px; --font-size-sm:14px; --font-size-base:16px;
+      --font-size-lg:18px; --font-size-xl:20px; --font-size-2xl:24px;
+      --font-size-3xl:28px; --font-size-4xl:32px;
+      --font-weight-regular:400; --font-weight-medium:500;
+      --font-weight-semibold:600; --font-weight-bold:700;
+      --spacing-4:4px; --spacing-8:8px; --spacing-16:16px; --spacing-24:24px;
+      --spacing-32:32px; --spacing-40:40px; --spacing-48:48px; --spacing-64:64px;
+      --radius-sm:5px; --radius-default:8px; --radius-md:10px;
+      --radius-lg:16px; --radius-full:9999px;
+      --bg: var(--color-surface-neutral-97); --surface: #fff;
+      --text: var(--color-text-black); --muted: var(--color-text-subdued);
+      --border: var(--color-border-neutral-85);
+      --accent1: var(--color-decorative-pink);
+      --accent2: var(--color-decorative-yellow);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family:'DM Sans',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+    .bg-blobs { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .bg-blobs::before { content:''; position:absolute; width:500px; height:500px; top:-150px; left:-150px; background:radial-gradient(circle,rgba(251,111,146,.22) 0%,transparent 70%); border-radius:50%; }
+    .bg-blobs::after  { content:''; position:absolute; width:400px; height:400px; bottom:-100px; right:-100px; background:radial-gradient(circle,rgba(255,173,77,.18) 0%,transparent 70%); border-radius:50%; }
+
+    .page { position:relative; z-index:1; max-width:680px; margin:0 auto; padding:var(--spacing-40) var(--spacing-16) var(--spacing-64); }
+
+    /* back */
+    .back-btn { display:inline-flex; align-items:center; gap:var(--spacing-8); text-decoration:none; color:var(--muted); font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); margin-bottom:var(--spacing-32); padding:var(--spacing-8) var(--spacing-16); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-full); transition:all .18s; }
+    .back-btn:hover { color:var(--text); transform:translateX(-2px); }
+    .back-btn svg { width:16px; height:16px; }
+
+    /* hero banner */
+    .hero-banner { border-radius:var(--radius-lg); height:220px; background:linear-gradient(135deg,var(--accent1),var(--accent2)); display:flex; align-items:center; justify-content:center; font-size:5rem; margin-bottom:var(--spacing-32); box-shadow:0 8px 32px rgba(251,111,146,.25); position:relative; overflow:hidden; }
+    .hero-banner::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 60%); }
+
+    /* meta row */
+    .meta-row { display:flex; flex-wrap:wrap; gap:var(--spacing-8); margin-bottom:var(--spacing-32); }
+    .meta-chip { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-full); padding:var(--spacing-4) var(--spacing-16); font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); color:var(--muted); }
+
+    /* project title */
+    .project-title { font-size:var(--font-size-4xl); font-weight:var(--font-weight-bold); letter-spacing:-.02em; line-height:1.2; margin-bottom:var(--spacing-8); }
+    .project-sub { font-size:var(--font-size-base); color:var(--muted); margin-bottom:var(--spacing-32); line-height:1.6; }
+
+    /* stats */
+    .stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--spacing-16); margin-bottom:var(--spacing-40); }
+    .stat-card { background:var(--surface); border:1px solid var(--color-border-neutral-96); border-radius:var(--radius-lg); padding:var(--spacing-24) var(--spacing-16); text-align:center; }
+    .stat-number { font-size:var(--font-size-3xl); font-weight:var(--font-weight-bold); background:linear-gradient(135deg,var(--accent1),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .stat-label { font-size:var(--font-size-xs); color:var(--muted); margin-top:var(--spacing-4); font-weight:var(--font-weight-semibold); }
+
+    /* sections */
+    .section { margin-bottom:var(--spacing-40); }
+    .section-label { font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:var(--spacing-16); }
+    .section-title { font-size:var(--font-size-2xl); font-weight:var(--font-weight-bold); margin-bottom:var(--spacing-16); }
+    .section-body { font-size:var(--font-size-sm); line-height:1.75; color:#44446a; }
+    .section-body p { margin-bottom:var(--spacing-16); }
+    .section-body p:last-child { margin-bottom:0; }
+
+    /* mockup placeholder */
+    .mockup { border-radius:var(--radius-lg); overflow:hidden; margin:var(--spacing-24) 0; }
+    .mockup-frame { background:linear-gradient(135deg,var(--accent1),var(--accent2)); height:280px; display:flex; align-items:center; justify-content:center; font-size:3.5rem; opacity:.9; }
+    .mockup-caption { background:var(--surface); border:1px solid var(--color-border-neutral-96); border-top:none; border-radius:0 0 var(--radius-lg) var(--radius-lg); padding:var(--spacing-16); font-size:var(--font-size-xs); color:var(--muted); font-weight:var(--font-weight-semibold); }
+
+    .mockup-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--spacing-16); margin:var(--spacing-24) 0; }
+    .mockup-sm { border-radius:var(--radius-lg); height:180px; display:flex; align-items:center; justify-content:center; font-size:2.5rem; }
+    .mg-1 { background:linear-gradient(135deg,var(--accent1),rgba(251,111,146,.4)); }
+    .mg-2 { background:linear-gradient(135deg,var(--accent2),rgba(255,173,77,.4)); }
+
+    /* process steps */
+    .process-steps { display:flex; flex-direction:column; gap:var(--spacing-16); }
+    .step { display:flex; gap:var(--spacing-16); align-items:flex-start; }
+    .step-num { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--accent1),var(--accent2)); color:#fff; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .step-body { flex:1; padding-top:4px; }
+    .step-title { font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); margin-bottom:var(--spacing-4); }
+    .step-desc { font-size:var(--font-size-sm); color:var(--muted); line-height:1.6; }
+
+    /* outcome pills */
+    .outcome-list { display:flex; flex-wrap:wrap; gap:var(--spacing-8); margin-top:var(--spacing-16); }
+    .outcome-pill { display:flex; align-items:center; gap:var(--spacing-8); background:var(--surface); border:1px solid var(--color-border-neutral-96); border-radius:var(--radius-lg); padding:var(--spacing-16); font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); }
+    .outcome-icon { font-size:1.25rem; }
+
+    /* next project */
+    .next-project { background:var(--surface); border:1px solid var(--color-border-neutral-96); border-radius:var(--radius-lg); padding:var(--spacing-24); display:flex; align-items:center; justify-content:space-between; text-decoration:none; color:var(--text); transition:all .18s; margin-top:var(--spacing-40); }
+    .next-project:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,.1); }
+    .next-label { font-size:var(--font-size-xs); color:var(--muted); font-weight:var(--font-weight-semibold); text-transform:uppercase; letter-spacing:.1em; margin-bottom:var(--spacing-4); }
+    .next-title { font-size:var(--font-size-lg); font-weight:var(--font-weight-bold); }
+    .next-arrow { font-size:1.5rem; color:var(--muted); }
+
+    /* divider */
+    hr { border:none; border-top:1px solid var(--color-border-neutral-96); margin:var(--spacing-40) 0; }
+
+    .fade-in { opacity:0; transform:translateY(12px); transition:opacity .4s ease,transform .4s ease; }
+    .fade-in.visible { opacity:1; transform:none; }
+
+    @media(max-width:480px) { .stat-row { grid-template-columns:1fr 1fr; } .mockup-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+<div class="bg-blobs"></div>
+<div class="page">
+
+  <a href="index.html" class="back-btn fade-in">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to portfolio
+  </a>
+
+  <div class="hero-banner fade-in">🏦</div>
+
+  <div class="meta-row fade-in">
+    <span class="meta-chip">Mobile App</span>
+    <span class="meta-chip">Fintech</span>
+    <span class="meta-chip">iOS</span>
+    <span class="meta-chip">2024</span>
+    <span class="meta-chip">Role: Lead Product Designer</span>
+  </div>
+
+  <div class="fade-in">
+    <div class="project-title">Finance Dashboard</div>
+    <div class="project-sub">Redesigning a complex fintech app to reduce cognitive load and help users take control of their finances — without feeling overwhelmed.</div>
+  </div>
+
+  <div class="stat-row fade-in">
+    <div class="stat-card"><div class="stat-number">−40%</div><div class="stat-label">Task completion time</div></div>
+    <div class="stat-card"><div class="stat-number">4.8★</div><div class="stat-label">App Store rating</div></div>
+    <div class="stat-card"><div class="stat-number">+62%</div><div class="stat-label">Daily active users</div></div>
+  </div>
+
+  <hr>
+
+  <div class="section fade-in">
+    <div class="section-label">01 — Problem</div>
+    <div class="section-title">Users couldn't find what they needed</div>
+    <div class="section-body">
+      <p>The existing dashboard buried critical actions under 4–5 taps. Users routinely called support to complete tasks they should be able to do in seconds. Session recordings showed 70% of users abandoned mid-flow on the transfer screen.</p>
+      <p>The core issue wasn't missing features — it was information architecture. Everything existed, but nothing was where users expected it to be.</p>
+    </div>
+    <div class="mockup fade-in">
+      <div class="mockup-frame">📊</div>
+      <div class="mockup-caption">Before — cluttered dashboard with 12+ primary actions visible at once</div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-label">02 — Process</div>
+    <div class="section-title">Research → Define → Design → Test</div>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">User interviews & session recordings</div>
+          <div class="step-desc">20 interviews with active users. Identified 3 core jobs-to-be-done: check balance, send money, view transactions.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Card sorting & IA restructure</div>
+          <div class="step-desc">Remote card sorting with 40 participants. Rebuilt navigation hierarchy around user mental models, not product features.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Rapid prototyping & usability testing</div>
+          <div class="step-desc">3 rounds of prototype testing with 5 users each. Iterated on task flows until completion rate exceeded 90%.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Handoff & implementation support</div>
+          <div class="step-desc">Worked alongside engineers during a 6-week sprint, resolving edge cases and maintaining design integrity.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-label">03 — Solution</div>
+    <div class="section-title">One screen, three actions, zero confusion</div>
+    <div class="section-body">
+      <p>The redesigned dashboard surfaces only what matters: current balance, quick-send shortcuts, and a smart transaction feed. Secondary features move to a persistent bottom nav — always one tap away, never in the way.</p>
+    </div>
+    <div class="mockup fade-in">
+      <div class="mockup-frame">✨</div>
+      <div class="mockup-caption">After — simplified dashboard with progressive disclosure</div>
+    </div>
+    <div class="mockup-grid fade-in">
+      <div class="mockup-sm mg-1">💸</div>
+      <div class="mockup-sm mg-2">📈</div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-label">04 — Outcomes</div>
+    <div class="section-title">Measurable impact, week one</div>
+    <div class="outcome-list">
+      <div class="outcome-pill"><span class="outcome-icon">⚡</span>Task completion time reduced by 40%</div>
+      <div class="outcome-pill"><span class="outcome-icon">⭐</span>App Store rating up from 3.2 to 4.8</div>
+      <div class="outcome-pill"><span class="outcome-icon">📞</span>Support calls down 55%</div>
+      <div class="outcome-pill"><span class="outcome-icon">👤</span>DAU grew 62% in 30 days post-launch</div>
+    </div>
+  </div>
+
+  <a href="cs-ecommerce.html" class="next-project fade-in">
+    <div>
+      <div class="next-label">Next project</div>
+      <div class="next-title">E-Commerce Redesign →</div>
+    </div>
+    <div class="next-arrow">🛒</div>
+  </a>
+
+</div>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.fade-in').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 70 + 80);
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Identity — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-text-black: #231f20; --color-text-white: #ffffff;
+      --color-text-subdued: #858693;
+      --color-surface-neutral-97: #edeff5;
+      --color-border-neutral-85: #cccfe5; --color-border-neutral-96: #edeff5;
+      --color-decorative-yellow: #ffad4d; --color-decorative-pink: #fb6f92;
+      --font-size-xs:12px; --font-size-sm:14px; --font-size-base:16px;
+      --font-size-lg:18px; --font-size-2xl:24px; --font-size-3xl:28px; --font-size-4xl:32px;
+      --font-weight-semibold:600; --font-weight-bold:700;
+      --spacing-4:4px; --spacing-8:8px; --spacing-16:16px; --spacing-24:24px;
+      --spacing-32:32px; --spacing-40:40px; --spacing-64:64px;
+      --radius-sm:5px; --radius-default:8px; --radius-lg:16px; --radius-full:9999px;
+      --bg:var(--color-surface-neutral-97); --surface:#fff;
+      --text:var(--color-text-black); --muted:var(--color-text-subdued); --border:var(--color-border-neutral-85);
+      --accent1:var(--color-decorative-yellow); --accent2:var(--color-decorative-pink);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family:'DM Sans',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+    .bg-blobs { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .bg-blobs::before { content:''; position:absolute; width:500px; height:500px; top:-150px; right:-150px; background:radial-gradient(circle,rgba(255,173,77,.2) 0%,transparent 70%); border-radius:50%; }
+    .bg-blobs::after  { content:''; position:absolute; width:400px; height:400px; bottom:-100px; left:-100px; background:radial-gradient(circle,rgba(251,111,146,.18) 0%,transparent 70%); border-radius:50%; }
+    .page { position:relative; z-index:1; max-width:680px; margin:0 auto; padding:40px var(--spacing-16) var(--spacing-64); }
+    .back-btn { display:inline-flex; align-items:center; gap:var(--spacing-8); text-decoration:none; color:var(--muted); font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); margin-bottom:var(--spacing-32); padding:var(--spacing-8) var(--spacing-16); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-full); transition:all .18s; }
+    .back-btn:hover { color:var(--text); transform:translateX(-2px); }
+    .back-btn svg { width:16px; height:16px; }
+    .hero-banner { border-radius:var(--radius-lg); height:220px; background:linear-gradient(135deg,var(--accent1),var(--accent2)); display:flex; align-items:center; justify-content:center; font-size:5rem; margin-bottom:var(--spacing-32); box-shadow:0 8px 32px rgba(255,173,77,.28); }
+    .meta-row { display:flex; flex-wrap:wrap; gap:var(--spacing-8); margin-bottom:var(--spacing-32); }
+    .meta-chip { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-full); padding:var(--spacing-4) var(--spacing-16); font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); color:var(--muted); }
+    .project-title { font-size:var(--font-size-4xl); font-weight:var(--font-weight-bold); letter-spacing:-.02em; line-height:1.2; margin-bottom:var(--spacing-8); }
+    .project-sub { font-size:var(--font-size-base); color:var(--muted); margin-bottom:var(--spacing-32); line-height:1.6; }
+    .stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--spacing-16); margin-bottom:40px; }
+    .stat-card { background:var(--surface); border:1px solid var(--color-border-neutral-96); border-radius:var(--radius-lg); padding:var(--spacing-24) var(--spacing-16); text-align:center; }
+    .stat-number { font-size:var(--font-size-3xl); font-weight:var(--font-weight-bold); background:linear-gradient(135deg,var(--accent1),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .stat-label { font-size:var(--font-size-xs); color:var(--muted); margin-top:var(--spacing-4); font-weight:var(--font-weight-semibold); }
+    .section { margin-bottom:40px; }
+    .section-label { font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:var(--spacing-16); }
+    .section-title { font-size:var(--font-size-2xl); font-weight:var(--font-weight-bold); margin-bottom:var(--spacing-16); }
+    .section-body { font-size:var(--font-size-sm); line-height:1.75; color:#44446a; }
+    .section-body p { margin-bottom:var(--spacing-16); }
+    .section-body p:last-child { margin-bottom:0; }
+    .mockup { border-radius:var(--radius-lg); overflow:hidden; margin:var(--spacing-24) 0; }
+    .mockup-frame { background:linear-gradient(135deg,var(--accent1),var(--accent2)); height:280px; display:flex; align-items:center; justify-content:center; font-size:3.5rem; }
+    .mockup-caption { background:var(--surface); border:1px solid var(--color-border-neutral-96); border-top:none; border-radius:0 0 var(--radius-lg) var(--radius-lg); padding:var(--spacing-16); font-size:var(--font-size-xs); color:var(--muted); font-weight:var(--font-weight-semibold); }
+    /* brand palette */
+    .palette-row { display:flex; gap:var(--spacing-8); margin:var(--spacing-24) 0; }
+    .swatch { flex:1; border-radius:var(--radius-default); height:80px; }
+    .sw-1{background:#ffad4d} .sw-2{background:#fb6f92} .sw-3{background:#1a1a2e}
+    .sw-4{background:#f5f5f5;border:1px solid #e0e0e0}
+    /* deliverable grid */
+    .deliv-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:var(--spacing-16); margin:var(--spacing-24) 0; }
+    .deliv-card { background:var(--surface); border:1px solid var(--color-border-neutral-96); border-radius:var(--radius-lg); overflow:hidden; }
+    .deliv-visual { height:120px; display:flex; align-items:center; justify-content:center; font-size:2.5rem; }
+    .dv-1 { background:linear-gradient(135deg,rgba(255,173,77,.2),rgba(251,111,146,.2)); }
+    .dv-2 { background:linear-gradient(135deg,rgba(251,111,146,.2),rgba(255,173,77,.15)); }
+    .dv-3 { background:#1a1a2e; }
+    .dv-4 { background:linear-gradient(135deg,rgba(255,173,77,.15),rgba(251,111,146,.1)); }
+    .deliv-label { padding:var(--spacing-16); font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); }
+    .process-steps { display:flex; flex-direction:column; gap:var(--spacing-16); }
+    .step { display:flex; gap:var(--spacing-16); align-items:flex-start; }
+    .step-num { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--accent1),var(--accent2)); color:#fff; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .step-body { flex:1; padding-top:4px; }
+    .step-title { font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); margin-bottom:var(--spacing-4); }
+    .step-desc { font-size:var(--font-size-sm); color:var(--muted); line-height:1.6; }
+    .outcome-list { display:flex; flex-wrap:wrap; gap:var(--spacing-8); margin-top:var(--spacing-16); }
+    .outcome-pill { display:flex; align-items:center; gap:var(--spacing-8); background:var(--surface); border:1px solid var(--color-border-neutral-96); border-radius:var(--radius-lg); padding:var(--spacing-16); font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); }
+    .back-to-portfolio { background:linear-gradient(135deg,var(--accent1),var(--accent2)); border-radius:var(--radius-lg); padding:var(--spacing-24); display:flex; align-items:center; justify-content:space-between; text-decoration:none; color:#fff; transition:all .18s; margin-top:40px; box-shadow:0 4px 20px rgba(255,173,77,.3); }
+    .back-to-portfolio:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,173,77,.4); }
+    .back-label { font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); text-transform:uppercase; letter-spacing:.1em; margin-bottom:var(--spacing-4); opacity:.8; }
+    .back-title { font-size:var(--font-size-lg); font-weight:var(--font-weight-bold); }
+    hr { border:none; border-top:1px solid var(--color-border-neutral-96); margin:40px 0; }
+    .fade-in { opacity:0; transform:translateY(12px); transition:opacity .4s ease,transform .4s ease; }
+    .fade-in.visible { opacity:1; transform:none; }
+    @media(max-width:480px) { .stat-row { grid-template-columns:1fr 1fr; } .deliv-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+<div class="bg-blobs"></div>
+<div class="page">
+
+  <a href="index.html" class="back-btn fade-in">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to portfolio
+  </a>
+
+  <div class="hero-banner fade-in">✨</div>
+
+  <div class="meta-row fade-in">
+    <span class="meta-chip">Branding</span>
+    <span class="meta-chip">SaaS Startup</span>
+    <span class="meta-chip">0 → 1</span>
+    <span class="meta-chip">2023</span>
+    <span class="meta-chip">Role: Brand Designer</span>
+  </div>
+
+  <div class="fade-in">
+    <div class="project-title">Brand Identity</div>
+    <div class="project-sub">Building a complete visual identity for an early-stage SaaS startup — from a name on a napkin to a full design language ready to ship.</div>
+  </div>
+
+  <div class="stat-row fade-in">
+    <div class="stat-card"><div class="stat-number">0→1</div><div class="stat-label">Full identity built</div></div>
+    <div class="stat-card"><div class="stat-number">6wk</div><div class="stat-label">Discovery to delivery</div></div>
+    <div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Deliverable packages</div></div>
+  </div>
+
+  <hr>
+
+  <div class="section fade-in">
+    <div class="section-label">01 — Brief</div>
+    <div class="section-title">A new product, no visual language</div>
+    <div class="section-body">
+      <p>The founders had a clear product vision but nothing visual. Their pitch deck used stock photos and system fonts. They needed a brand that could stand up in investor decks, a product launch, and social media — all at once.</p>
+      <p>The challenge: create something that feels premium and trustworthy, but not corporate. Ambitious but accessible. Built to scale as the company grows.</p>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-label">02 — Process</div>
+    <div class="section-title">Discovery → Strategy → Design → Refine</div>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Brand discovery workshop</div>
+          <div class="step-desc">3-hour session with the founders covering mission, values, audience, competitors, and personality. Generated 40+ positioning statements, narrowed to 3.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Moodboards & visual territory</div>
+          <div class="step-desc">3 distinct visual directions presented: Modern Minimal, Bold & Playful, and Premium Dark. Client selected direction 2 with elements from direction 3.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Logo exploration</div>
+          <div class="step-desc">20 logo sketches → 6 refined concepts → 2 final options. Selected mark is a geometric monogram that works at 16px favicon and 10m billboard.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">System build & guidelines</div>
+          <div class="step-desc">Colour system, type scale, spacing, icon style, photography direction, tone of voice. Everything documented in a 40-page brand guide.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-label">03 — Visual Language</div>
+    <div class="section-title">Warm, bold, purposeful</div>
+    <div class="section-body">
+      <p>The palette pairs a warm amber primary with a coral accent — energetic but not aggressive. Dark navy grounds the system for premium touchpoints. Every colour has a defined role.</p>
+    </div>
+    <div class="palette-row fade-in">
+      <div class="swatch sw-1"></div>
+      <div class="swatch sw-2"></div>
+      <div class="swatch sw-3"></div>
+      <div class="swatch sw-4"></div>
+    </div>
+    <div class="mockup fade-in">
+      <div class="mockup-frame">🎨</div>
+      <div class="mockup-caption">Logo system — primary, reversed, monogram, and favicon variants</div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-label">04 — Deliverables</div>
+    <div class="section-title">Everything they need to launch</div>
+    <div class="deliv-grid fade-in">
+      <div class="deliv-card">
+        <div class="deliv-visual dv-1">🔠</div>
+        <div class="deliv-label">Logo system (6 variants)</div>
+      </div>
+      <div class="deliv-card">
+        <div class="deliv-visual dv-2">🖨️</div>
+        <div class="deliv-label">Brand guidelines (40 pages)</div>
+      </div>
+      <div class="deliv-card">
+        <div class="deliv-visual dv-3">🌐</div>
+        <div class="deliv-label">Website design (5 screens)</div>
+      </div>
+      <div class="deliv-card">
+        <div class="deliv-visual dv-4">📊</div>
+        <div class="deliv-label">Pitch deck template (12 slides)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-label">05 — Outcomes</div>
+    <div class="section-title">Ready to raise, ready to ship</div>
+    <div class="outcome-list">
+      <div class="outcome-pill"><span>💰</span>Used in seed round pitch — funded</div>
+      <div class="outcome-pill"><span>🚀</span>Product launched 6 weeks post-delivery</div>
+      <div class="outcome-pill"><span>📱</span>Social presence built on day 1</div>
+      <div class="outcome-pill"><span>📐</span>Brand guide adopted by 3-person team immediately</div>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-to-portfolio fade-in">
+    <div>
+      <div class="back-label">That's a wrap</div>
+      <div class="back-title">← Back to all work</div>
+    </div>
+    <div style="font-size:1.5rem">🏠</div>
+  </a>
+
+</div>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.fade-in').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 70 + 80);
+    });
+  });
+</script>
+</body>
+</html>

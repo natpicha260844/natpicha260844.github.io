@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Commerce Redesign — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-text-black: #231f20; --color-text-white: #ffffff;
+      --color-text-subdued: #858693; --color-text-placeholder: #aeafb7;
+      --color-button-default: #4060ff;
+      --color-semantic-success: #00af6c;
+      --color-surface-neutral-97: #edeff5; --color-surface-blue: #e5f0ff;
+      --color-border-neutral-85: #cccfe5; --color-border-neutral-96: #edeff5;
+      --color-decorative-blue: #4361ee; --color-decorative-green: #17c3b2;
+      --font-size-xs:12px; --font-size-sm:14px; --font-size-base:16px;
+      --font-size-lg:18px; --font-size-2xl:24px; --font-size-3xl:28px; --font-size-4xl:32px;
+      --font-weight-regular:400; --font-weight-medium:500; --font-weight-semibold:600; --font-weight-bold:700;
+      --spacing-4:4px; --spacing-8:8px; --spacing-16:16px; --spacing-24:24px;
+      --spacing-32:32px; --spacing-40:40px; --spacing-48:48px; --spacing-64:64px;
+      --radius-sm:5px; --radius-default:8px; --radius-md:10px; --radius-lg:16px; --radius-full:9999px;
+      --bg:var(--color-surface-neutral-97); --surface:#fff;
+      --text:var(--color-text-black); --muted:var(--color-text-subdued); --border:var(--color-border-neutral-85);
+      --accent1:var(--color-decorative-blue); --accent2:var(--color-decorative-green);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family:'DM Sans',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+    .bg-blobs { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .bg-blobs::before { content:''; position:absolute; width:500px; height:500px; top:-150px; left:-150px; background:radial-gradient(circle,rgba(67,97,238,.18) 0%,transparent 70%); border-radius:50%; }
+    .bg-blobs::after  { content:''; position:absolute; width:400px; height:400px; bottom:-100px; right:-100px; background:radial-gradient(circle,rgba(23,195,178,.15) 0%,transparent 70%); border-radius:50%; }
+    .page { position:relative; z-index:1; max-width:680px; margin:0 auto; padding:var(--spacing-40) var(--spacing-16) var(--spacing-64); }
+    .back-btn { display:inline-flex; align-items:center; gap:var(--spacing-8); text-decoration:none; color:var(--muted); font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); margin-bottom:var(--spacing-32); padding:var(--spacing-8) var(--spacing-16); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-full); transition:all .18s; }
+    .back-btn:hover { color:var(--text); transform:translateX(-2px); }
+    .back-btn svg { width:16px; height:16px; }
+    .hero-banner { border-radius:var(--radius-lg); height:220px; background:linear-gradient(135deg,var(--accent1),var(--accent2)); display:flex; align-items:center; justify-content:center; font-size:5rem; margin-bottom:var(--spacing-32); box-shadow:0 8px 32px rgba(67,97,238,.22); }
+    .meta-row { display:flex; flex-wrap:wrap; gap:var(--spacing-8); margin-bottom:var(--spacing-32); }
+    .meta-chip { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-full); padding:var(--spacing-4) var(--spacing-16); font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); color:var(--muted); }
+    .project-title { font-size:var(--font-size-4xl); font-weight:var(--font-weight-bold); letter-spacing:-.02em; line-height:1.2; margin-bottom:var(--spacing-8); }
+    .project-sub { font-size:var(--font-size-base); color:var(--muted); margin-bottom:var(--spacing-32); line-height:1.6; }
+    .stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--spacing-16); margin-bottom:var(--spacing-40); }
+    .stat-card { background:var(--surface); border:1px solid var(--color-border-neutral-96); border-radius:var(--radius-lg); padding:var(--spacing-24) var(--spacing-16); text-align:center; }
+    .stat-number { font-size:var(--font-size-3xl); font-weight:var(--font-weight-bold); background:linear-gradient(135deg,var(--accent1),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .stat-label { font-size:var(--font-size-xs); color:var(--muted); margin-top:var(--spacing-4); font-weight:var(--font-weight-semibold); }
+    .section { margin-bottom:var(--spacing-40); }
+    .section-label { font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:var(--spacing-16); }
+    .section-title { font-size:var(--font-size-2xl); font-weight:var(--font-weight-bold); margin-bottom:var(--spacing-16); }
+    .section-body { font-size:var(--font-size-sm); line-height:1.75; color:#44446a; }
+    .section-body p { margin-bottom:var(--spacing-16); }
+    .section-body p:last-child { margin-bottom:0; }
+    .mockup { border-radius:var(--radius-lg); overflow:hidden; margin:var(--spacing-24) 0; }
+    .mockup-frame { background:linear-gradient(135deg,var(--accent1),var(--accent2)); height:280px; display:flex; align-items:center; justify-content:center; font-size:3.5rem; }
+    .mockup-caption { background:var(--surface); border:1px solid var(--color-border-neutral-96); border-top:none; border-radius:0 0 var(--radius-lg) var(--radius-lg); padding:var(--spacing-16); font-size:var(--font-size-xs); color:var(--muted); font-weight:var(--font-weight-semibold); }
+    .mockup-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--spacing-16); margin:var(--spacing-24) 0; }
+    .mockup-sm { border-radius:var(--radius-lg); height:140px; display:flex; align-items:center; justify-content:center; font-size:2rem; }
+    .mg-1 { background:linear-gradient(135deg,var(--accent1),rgba(67,97,238,.4)); }
+    .mg-2 { background:linear-gradient(135deg,rgba(67,97,238,.5),var(--accent2)); }
+    .mg-3 { background:linear-gradient(135deg,var(--accent2),rgba(23,195,178,.4)); }
+    .process-steps { display:flex; flex-direction:column; gap:var(--spacing-16); }
+    .step { display:flex; gap:var(--spacing-16); align-items:flex-start; }
+    .step-num { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--accent1),var(--accent2)); color:#fff; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .step-body { flex:1; padding-top:4px; }
+    .step-title { font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); margin-bottom:var(--spacing-4); }
+    .step-desc { font-size:var(--font-size-sm); color:var(--muted); line-height:1.6; }
+    .outcome-list { display:flex; flex-wrap:wrap; gap:var(--spacing-8); margin-top:var(--spacing-16); }
+    .outcome-pill { display:flex; align-items:center; gap:var(--spacing-8); background:var(--surface); border:1px solid var(--color-border-neutral-96); border-radius:var(--radius-lg); padding:var(--spacing-16); font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); }
+    .outcome-icon { font-size:1.25rem; }
+    .next-project { background:var(--surface); border:1px solid var(--color-border-neutral-96); border-radius:var(--radius-lg); padding:var(--spacing-24); display:flex; align-items:center; justify-content:space-between; text-decoration:none; color:var(--text); transition:all .18s; margin-top:var(--spacing-40); }
+    .next-project:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,.1); }
+    .next-label { font-size:var(--font-size-xs); color:var(--muted); font-weight:var(--font-weight-semibold); text-transform:uppercase; letter-spacing:.1em; margin-bottom:var(--spacing-4); }
+    .next-title { font-size:var(--font-size-lg); font-weight:var(--font-weight-bold); }
+    hr { border:none; border-top:1px solid var(--color-border-neutral-96); margin:var(--spacing-40) 0; }
+    .fade-in { opacity:0; transform:translateY(12px); transition:opacity .4s ease,transform .4s ease; }
+    .fade-in.visible { opacity:1; transform:none; }
+    @media(max-width:480px) { .stat-row { grid-template-columns:1fr 1fr; } .mockup-grid { grid-template-columns:1fr 1fr; } }
+  </style>
+</head>
+<body>
+<div class="bg-blobs"></div>
+<div class="page">
+
+  <a href="index.html" class="back-btn fade-in">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to portfolio
+  </a>
+
+  <div class="hero-banner fade-in">🛒</div>
+
+  <div class="meta-row fade-in">
+    <span class="meta-chip">Web App</span>
+    <span class="meta-chip">E-Commerce</span>
+    <span class="meta-chip">Responsive</span>
+    <span class="meta-chip">2024</span>
+    <span class="meta-chip">Role: Product Designer</span>
+  </div>
+
+  <div class="fade-in">
+    <div class="project-title">E-Commerce Redesign</div>
+    <div class="project-sub">An end-to-end redesign of a retail platform — simplifying the path from discovery to purchase, and turning browsers into buyers.</div>
+  </div>
+
+  <div class="stat-row fade-in">
+    <div class="stat-card"><div class="stat-number">+28%</div><div class="stat-label">Conversion rate</div></div>
+    <div class="stat-card"><div class="stat-number">7→3</div><div class="stat-label">Checkout steps</div></div>
+    <div class="stat-card"><div class="stat-number">−34%</div><div class="stat-label">Cart abandonment</div></div>
+  </div>
+
+  <hr>
+
+  <div class="section fade-in">
+    <div class="section-label">01 — Problem</div>
+    <div class="section-title">A leaky funnel losing customers at every step</div>
+    <div class="section-body">
+      <p>Analytics showed an 82% drop-off between cart and payment. Exit surveys pointed to a confusing checkout — too many form fields, unclear shipping costs, and a forced account creation before purchase.</p>
+      <p>Mobile accounted for 68% of traffic but only 31% of conversions. The experience was clearly built desktop-first and never properly adapted.</p>
+    </div>
+    <div class="mockup fade-in">
+      <div class="mockup-frame">📉</div>
+      <div class="mockup-caption">Before — 7-step checkout with 3 mandatory account screens</div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-label">02 — Process</div>
+    <div class="section-title">Data-led, user-validated</div>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Funnel analysis & heatmaps</div>
+          <div class="step-desc">Analysed 90 days of session recordings and funnel data. Pinpointed exact drop-off points and rage-click hotspots.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Competitive benchmarking</div>
+          <div class="step-desc">Audited checkout flows of 12 top-performing e-commerce sites. Identified patterns that reduce friction at payment.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Mobile-first redesign</div>
+          <div class="step-desc">Rebuilt every screen starting at 375px. Guest checkout, inline validation, and persistent order summary panel.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">A/B test → full rollout</div>
+          <div class="step-desc">Ran a 2-week A/B test with 50/50 traffic split. Results confirmed; rolled out to 100% of users.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-label">03 — Solution</div>
+    <div class="section-title">3 steps, no surprises, no friction</div>
+    <div class="section-body">
+      <p>The new checkout is a single progressive form — shipping, payment, confirm. Costs are shown upfront. Guest checkout is the default. On mobile, the CTA is always visible above the fold.</p>
+    </div>
+    <div class="mockup-grid fade-in">
+      <div class="mockup-sm mg-1">🛍️</div>
+      <div class="mockup-sm mg-2">💳</div>
+      <div class="mockup-sm mg-3">✅</div>
+    </div>
+    <div class="mockup fade-in">
+      <div class="mockup-frame">📱</div>
+      <div class="mockup-caption">After — mobile checkout in 3 steps with inline cost summary</div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-label">04 — Outcomes</div>
+    <div class="section-title">First month post-launch</div>
+    <div class="outcome-list">
+      <div class="outcome-pill"><span class="outcome-icon">📈</span>Conversion rate up 28%</div>
+      <div class="outcome-pill"><span class="outcome-icon">🛒</span>Cart abandonment down 34%</div>
+      <div class="outcome-pill"><span class="outcome-icon">📱</span>Mobile CVR nearly doubled</div>
+      <div class="outcome-pill"><span class="outcome-icon">⏱️</span>Average checkout time cut by 45%</div>
+    </div>
+  </div>
+
+  <a href="cs-design-system.html" class="next-project fade-in">
+    <div>
+      <div class="next-label">Next project</div>
+      <div class="next-title">Component Library →</div>
+    </div>
+    <div style="font-size:1.5rem">🎨</div>
+  </a>
+
+</div>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.fade-in').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 70 + 80);
+    });
+  });
+</script>
+</body>
+</html>
